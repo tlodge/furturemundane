@@ -27,15 +27,19 @@ class Camera:
         is truncated before capture to reduce recognition latency at the expense
         of frame rate. """
     def __init__(self, training_mode):
-        self.training_mode = training_mode
-        self.camera = PiCamera()
-        self.camera.resolution = (128, 128)
-        self.camera.framerate = 30
-        self.capture = PiRGBArray(self.camera, size=self.camera.resolution)
-        self.stream = self.camera.capture_continuous(self.capture,
+        print ("INITING CAMERA");
+        try:
+          self.training_mode = training_mode
+          self.camera = PiCamera()
+          print("CREATED CAMERA..");
+          self.camera.resolution = (128, 128)
+          self.camera.framerate = 30
+          self.capture = PiRGBArray(self.camera, size=self.camera.resolution)
+          self.stream = self.camera.capture_continuous(self.capture,
                                                      format='rgb',
                                                      use_video_port=True)
-        if training_mode:
+
+          if training_mode:
             # We allow picamera's auto exposure settings to settle for 5 seconds then we
             # lock them so they don't change in response to actions as this can cause problems.
             # If waving your hands causes the camera to shift its exposure settings during training
@@ -45,7 +49,8 @@ class Camera:
             self.camera.exposure_mode = 'off'
             self.base_awb = self.camera.awb_gains
             self.camera.awb_mode = 'off'
-
+        except:
+          print("restart me!");
 
     def next_frame(self):
         """ Capture a frame from the camera. By truncating the frame buffer we

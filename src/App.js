@@ -16,10 +16,18 @@ function App() {
      });	
   }
 
+  const record = ()=>{
+     axios({
+      method:"get",
+      url : '/record/handup',
+     });
+  }
+
   return (
     <div className="App">
       <Speech/>
       <a href="#" onClick={sendit}>send category</a>
+      <a href="#" onClick={record}>start recording gesture</a>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <img src="/video_feed"/>
